@@ -1,5 +1,11 @@
 package com.example.webflux.controller;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.service.additional.update.impl.UpdateChainWrapper;
+import com.example.webflux.common.enums.ResultEnum;
+import com.example.webflux.common.response.ResponseResult;
 import com.example.webflux.domain.User;
 import com.example.webflux.repository.UserRepository;
 import com.example.webflux.service.UserService;
@@ -47,7 +53,7 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping("/user/selectAllUser")
+    @RequestMapping("/user/list")
     public List<User> selectAllUsers() {
 
         List<User> userList = userServiceImpl.list();
@@ -56,6 +62,18 @@ public class UserController {
             return new ArrayList<>();
         } else {
             return userList;
+        }
+    }
+
+    @RequestMapping("/user/update")
+    public ResponseResult updateUser(User user) {
+
+        if (userServiceImpl.update(user
+                ,new UpdateWrapper<User>()
+                        .eq("id",17))) {
+            return new ResponseResult(ResultEnum.SUCCESS);
+        } else {
+            return new ResponseResult(ResultEnum.FAILE);
         }
     }
 
