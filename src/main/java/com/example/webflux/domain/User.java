@@ -1,6 +1,8 @@
 package com.example.webflux.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.example.webflux.validation.constraints.ValidCardNumber;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.Date;
 public class User {
     @NotBlank(message = "编号不能为空")
     @Max(value = 1000,message = "id不能大于1000")
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     @NotBlank(message = "用户名不能为空")

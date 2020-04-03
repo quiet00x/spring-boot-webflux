@@ -41,15 +41,17 @@ public class UserController {
     public User saveUser(@RequestParam String userName) {
         User user = new User();
         user.setUserName(userName);
-        user.setId(idGenerator.incrementAndGet());
-        userRepository.save(user);
+
+        if (userServiceImpl.save(user)) {
+            userRepository.save(user);
+        }
         return user;
     }
 
     @RequestMapping("/user/selectAllUser")
     public List<User> selectAllUsers() {
 
-        List<User> userList = userServiceImpl.selectAllUsers();
+        List<User> userList = userServiceImpl.list();
 
         if (CollectionUtils.isEmpty(userList)) {
             return new ArrayList<>();
