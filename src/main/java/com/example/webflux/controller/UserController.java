@@ -2,12 +2,16 @@ package com.example.webflux.controller;
 
 import com.example.webflux.domain.User;
 import com.example.webflux.repository.UserRepository;
+import com.example.webflux.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -19,7 +23,10 @@ import java.util.concurrent.atomic.AtomicLong;
 public class UserController {
 
     private final UserRepository userRepository;
+
     private final AtomicLong idGenerator = new AtomicLong();
+    @Autowired
+    private UserService userServiceImpl;
 
     /**
      * 构造器自动注入repository
@@ -37,6 +44,18 @@ public class UserController {
         user.setId(idGenerator.incrementAndGet());
         userRepository.save(user);
         return user;
+    }
+
+    @RequestMapping("/user/selectAllUser")
+    public List<User> selectAllUsers() {
+
+        List<User> userList = userServiceImpl.selectAllUsers();
+
+        if (CollectionUtils.isEmpty(userList)) {
+            return new ArrayList<>();
+        } else {
+            return userList;
+        }
     }
 
 }
