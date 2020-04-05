@@ -1,4 +1,4 @@
-package com.example.webflux.config;
+package com.example.webflux.config.webflux;
 
 import com.example.webflux.domain.UserBean;
 import com.example.webflux.repository.UserRepository;

@@ -3,7 +3,6 @@ package com.example.webflux.controller;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.webflux.common.enums.ResultEnum;
 import com.example.webflux.common.response.ResponseResult;
-import com.example.webflux.config.DictionaryPropertiesConfiguration;
 import com.example.webflux.domain.UserBean;
 import com.example.webflux.repository.UserRepository;
 import com.example.webflux.service.UserService;

@@ -1,4 +1,4 @@
-package com.example.webflux.config;
+package com.example.webflux.config.properties;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
