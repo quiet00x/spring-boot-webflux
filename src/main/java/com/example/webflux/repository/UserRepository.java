@@ -1,6 +1,6 @@
 package com.example.webflux.repository;
 
-import com.example.webflux.domain.User;
+import com.example.webflux.domain.UserBean;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -18,14 +18,14 @@ public class UserRepository {
     /**
      * 支持并发的HashMap
      */
-    private final ConcurrentMap<Long, User> repository = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Long, UserBean> repository = new ConcurrentHashMap<>();
 
     /**
      * 原子类，原理是CAS
      */
     private final AtomicLong idGenerator = new AtomicLong();
 
-    public Boolean save(User user) {
+    public Boolean save(UserBean user) {
         // ID 自增
         long id = idGenerator.incrementAndGet();
 
@@ -38,7 +38,7 @@ public class UserRepository {
      * 返回集合中所有的对象
      * @return 返回的是view 只读
      */
-    public Collection<User> findAll() {
+    public Collection<UserBean> findAll() {
         return repository.values();
     }
 

@@ -1,7 +1,7 @@
 package com.example.webflux.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.webflux.domain.User;
+import com.example.webflux.domain.UserBean;
 import com.example.webflux.mapper.UserMapper;
 import com.example.webflux.service.UserService;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
  * @author: Mr_Bangb
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implements UserService {
 
 }

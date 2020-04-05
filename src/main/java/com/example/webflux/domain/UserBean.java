@@ -23,7 +23,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("my_user")
-public class User {
+public class UserBean {
     @NotBlank(message = "编号不能为空")
     @Max(value = 1000,message = "id不能大于1000")
     @TableId(type = IdType.AUTO)

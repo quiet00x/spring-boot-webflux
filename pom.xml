@@ -36,6 +36,12 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- log4j2 依赖 性能较log4j 提高很多 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

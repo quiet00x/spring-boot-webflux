@@ -1,14 +1,13 @@
 package com.example.webflux.controller;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.extension.service.additional.update.impl.UpdateChainWrapper;
 import com.example.webflux.common.enums.ResultEnum;
 import com.example.webflux.common.response.ResponseResult;
-import com.example.webflux.domain.User;
+import com.example.webflux.config.DictionaryPropertiesConfiguration;
+import com.example.webflux.domain.UserBean;
 import com.example.webflux.repository.UserRepository;
 import com.example.webflux.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +24,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author: Mr_Bangb
  */
 @RestController
+@Slf4j
 public class UserController {
 
     private final UserRepository userRepository;
@@ -32,6 +32,8 @@ public class UserController {
     private final AtomicLong idGenerator = new AtomicLong();
     @Autowired
     private UserService userServiceImpl;
+    @Autowired
+    private DictionaryPropertiesConfiguration.DictionaryBean dictionaryBean;
 
     /**
      * 构造器自动注入repository
@@ -43,8 +45,8 @@ public class UserController {
     }
 
     @RequestMapping("/user/save")
-    public User saveUser(@RequestParam String userName) {
-        User user = new User();
+    public UserBean saveUser(@RequestParam String userName) {
+        UserBean user = new UserBean();
         user.setUserName(userName);
 
         if (userServiceImpl.save(user)) {
@@ -54,9 +56,11 @@ public class UserController {
     }
 
     @RequestMapping("/user/list")
-    public List<User> selectAllUsers() {
+    public List<UserBean> selectAllUsers() {
 
-        List<User> userList = userServiceImpl.list();
+        log.info(dictionaryBean.getShareDiskPath());
+
+        List<UserBean> userList = userServiceImpl.list();
 
         if (CollectionUtils.isEmpty(userList)) {
             return new ArrayList<>();
@@ -66,10 +70,10 @@ public class UserController {
     }
 
     @RequestMapping("/user/update")
-    public ResponseResult updateUser(User user) {
+    public ResponseResult updateUser(UserBean user) {
 
         if (userServiceImpl.update(user
-                ,new UpdateWrapper<User>()
+                ,new UpdateWrapper<UserBean>()
                         .eq("id",17))) {
             return new ResponseResult(ResultEnum.SUCCESS);
         } else {
