@@ -37,6 +37,8 @@ public class UserController {
     private Properties dictProperties;
     @Resource(name="versionProperties")
     private Properties versionProperties;
+    @Resource(name="properties")
+    private Properties properties;
 
     /**
      * 构造器自动注入repository
@@ -88,6 +90,8 @@ public class UserController {
        log.info(dictProperties.get("userName").toString());
 
        log.info(versionProperties.get("projectVersion").toString());
+
+        log.info(properties.getProperty("userId"));
     }
 
 }
