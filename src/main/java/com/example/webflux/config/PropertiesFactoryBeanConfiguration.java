@@ -25,8 +25,7 @@ public class PropertiesFactoryBeanConfiguration {
     @Bean(name = "properties")
     public PropertiesFactoryBean getPropertiesFactoryBean() {
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-//        Resource resource =
-//        propertiesFactoryBean.setLocations();
+
         return propertiesFactoryBean;
     }
 

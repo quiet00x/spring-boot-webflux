@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -32,8 +34,10 @@ public class UserController {
     private final AtomicLong idGenerator = new AtomicLong();
     @Autowired
     private UserService userServiceImpl;
-    @Autowired
-    private DictionaryPropertiesConfiguration.DictionaryBean dictionaryBean;
+    @Resource(name="dictProperties")
+    private Properties dictProperties;
+    @Resource(name="versionProperties")
+    private Properties versionProperties;
 
     /**
      * 构造器自动注入repository
@@ -58,8 +62,6 @@ public class UserController {
     @RequestMapping("/user/list")
     public List<UserBean> selectAllUsers() {
 
-        log.info(dictionaryBean.getShareDiskPath());
-
         List<UserBean> userList = userServiceImpl.list();
 
         if (CollectionUtils.isEmpty(userList)) {
@@ -79,6 +81,14 @@ public class UserController {
         } else {
             return new ResponseResult(ResultEnum.FAILE);
         }
+    }
+
+    @RequestMapping("/user/load")
+    public void load(UserBean user) {
+
+       log.info(dictProperties.get("userName").toString());
+
+       log.info(versionProperties.get("projectVersion").toString());
     }
 
 }
