@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.example.webflux.validation.constraints.ValidCardNumber;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Max;
@@ -23,6 +24,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("my_user")
+@EqualsAndHashCode
 public class UserBean {
     @NotBlank(message = "编号不能为空")
     @Max(value = 1000,message = "id不能大于1000")
