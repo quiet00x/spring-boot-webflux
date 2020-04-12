@@ -129,6 +129,18 @@
             <version>1.3.2</version>
         </dependency>
 
+        <!-- redis相关依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <exclusions><!-- 去掉 redis 的日志  start -> logging -->
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- SpringBoot测试框架 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
