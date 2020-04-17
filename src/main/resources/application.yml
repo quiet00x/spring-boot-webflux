@@ -7,6 +7,7 @@ spring:
     url: jdbc:p6spy:mysql:///my_prayer?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
     username: root
     password: root
+    type: com.zaxxer.hikari.HikariDataSource
 
 # freemarker模板引擎配置
   freemarker:
@@ -19,7 +20,7 @@ spring:
       datetime_format: yyyy-MM-dd HH:mm
       number_format: 0.##
 
-#redis 配置
+  #redis 配置
   redis:
     # redis服务器 ip
     host: 192.168.180.131
