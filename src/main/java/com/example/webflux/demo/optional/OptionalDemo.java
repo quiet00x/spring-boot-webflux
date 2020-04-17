@@ -79,22 +79,22 @@ public class OptionalDemo {
         //------------< map 有内容 则执行 T mapper.apply(value) 方法 返回 Optional 对象
         // 如果 Optional 对象不为空 则返回 apply的结果
         // 输出 方法的返回值
-        System.out.println(optNotNull.map(s -> "方法的返回值").get());
+        System.out.println(optNotNull.map(s -> "@return apply").get());
 
         //------------< orElse 没有内容，则返回
         // 如果 Optional 对象不为空  则返回 value 若未空 则返回orther
         // 输出 如果optional为空，则返回orther
-        System.out.println(optNull.orElse("如果optional为空，则返回orther"));
+        System.out.println(optNull.orElse("@return orther"));
 
         // ------------< map 返回的是Optional 对象，orElse 返回的是 value
         // 所处可以配合使用 最终返回 所需要的notNull 的 value
         // java notNull模式
 
-        String valueRet = optNotNull.map(s -> "方法的返回值").orElse("empty 则返回 other");
+        String valueRet = optNotNull.map(s -> "@return apply").orElse("@return other");
         // 最终输出 方法的返回值
         System.out.println(valueRet);
 
-        String valueResult2 = optNull.map(s -> "方法的返回值").orElse("empty 则返回 other");
+        String valueResult2 = optNull.map(s -> "方法的返回值").orElse("other");
         // 最终输出 empty 则返回 other
         System.out.println(valueResult2);
     }
