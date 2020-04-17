@@ -1,4 +1,4 @@
-package com.example.webflux.demo;
+package com.example.webflux.demo.lambda;
 
 import org.apache.commons.lang3.StringUtils;
 

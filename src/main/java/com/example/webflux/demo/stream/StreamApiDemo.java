@@ -1,4 +1,4 @@
-package com.example.webflux.demo;
+package com.example.webflux.demo.stream;
 
 import com.example.webflux.domain.UserBean;
 
