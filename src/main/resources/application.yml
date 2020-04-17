@@ -8,6 +8,7 @@ spring:
     username: root
     password: root
     type: com.zaxxer.hikari.HikariDataSource
+    #   数据源其他配置
 
 # freemarker模板引擎配置
   freemarker:
