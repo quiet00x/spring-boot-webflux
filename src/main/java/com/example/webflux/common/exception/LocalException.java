@@ -2,6 +2,7 @@ package com.example.webflux.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @project_name: spring-boot-webflux
@@ -10,6 +11,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
+@Slf4j
 public class LocalException extends RuntimeException {
 
     /**
@@ -31,13 +33,13 @@ public class LocalException extends RuntimeException {
     public LocalException(String errorCode) {
         super(errorCode);
         this.errorCode = errorCode;
+        log.error(errorCode);
     }
 
-    public LocalException(Throwable cause) {
-        super(cause);
+    public LocalException(String errorCode, Object ... args) {
+        super(errorCode);
+        this.errorCode = errorCode;
+        log.error(errorCode,args);
     }
 
-    public LocalException(String errorMessage, Throwable cause) {
-        super(errorMessage, cause);
-    }
 }

@@ -1,6 +1,6 @@
 package com.example.webflux.service.impl;
 
-import com.example.webflux.common.constant.Constant;
+import com.example.webflux.common.constant.WebConstant;
 import com.example.webflux.domain.CreditBaseBean;
 import com.example.webflux.service.BV6070Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,8 @@ public class DepositCreditServiceImpl extends BaseCreditProofServiceImpl{
 		Map<String, Object> register = bv6070ServiceImpl.registerDepositCredit(creditBaseBean);
 		Map<String, Object> resultMap = bv6070ServiceImpl.parseRegisterRet(register);
 		
-		List<String> registerNoList = (List<String>) resultMap.get(Constant.CreditProof.REGISTER_NO_LIST_PARAM);
-		String creditNo = (String) resultMap.get(Constant.CreditProof.CREDIT_NO_PARAM);
+		List<String> registerNoList = (List<String>) resultMap.get(WebConstant.CreditProof.REGISTER_NO_LIST_PARAM);
+		String creditNo = (String) resultMap.get(WebConstant.CreditProof.CREDIT_NO_PARAM);
 		
 		creditBaseBean.setCreditNo(creditNo);
 		creditBaseBean.setRegisterNoList(registerNoList.toString());

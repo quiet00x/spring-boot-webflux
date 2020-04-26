@@ -3,5 +3,52 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.webflux.mapper.UserMapper">
-	
+
+    <sql id="user_result">
+        id
+            ,user_name
+            ,password
+            ,age
+            ,birthday
+            ,sex
+            ,salary
+    </sql>
+
+    <select id="mySelectUsers" parameterType="com.example.webflux.domain.UserBean"
+            resultType="com.example.webflux.domain.UserBean">
+        select
+             <include refid="user_result" />
+        from my_user
+        <where>
+            <if test="id_in != null and id_in.size()>0">
+                and  id in
+                <foreach collection="id_in" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+             </if>
+            <if test="sex != null and sex!= '' ">
+                and sex = #{sex}
+            </if>
+        </where>
+    </select>
+    <select id="selectSalesUsers" resultType="com.example.webflux.domain.UserBean">
+            select * from SALES_USER where id = ${id}
+    </select>
+
+    <select id="selectAdminUsers" resultType="com.example.webflux.domain.UserBean">
+            select * from ADMIN_USER where id = ${id}
+    </select>
+
+    <select id="selectPerUsers" resultType="com.example.webflux.domain.UserBean">
+            select * from PER_USER where id = ${id}
+    </select>
+
+    <select id="selectPurUsers" resultType="com.example.webflux.domain.UserBean">
+            select * from PUR_USER where id = ${id}
+    </select>
+
+    <select id="selectUserByTransCode" resultType="com.example.webflux.domain.UserBean">
+        select * from ${tableName} where id = ${id}
+    </select>
+
 </mapper>

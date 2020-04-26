@@ -5,27 +5,27 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.example.webflux.validation.constraints.ValidCardNumber;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @project_name: spring-boot-webflux
  * @date: 2020/4/2 - 18:44
  * @author: Mr_Bangb
  */
-@Data
-@AllArgsConstructor
+@ToString
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 @TableName("my_user")
-@EqualsAndHashCode
 public class UserBean {
+
     @NotBlank(message = "编号不能为空")
     @Max(value = 1000,message = "id不能大于1000")
     @TableId(type = IdType.AUTO)
@@ -43,7 +43,13 @@ public class UserBean {
 
     private Date birthday;
 
-    private Character sex;
+    private String sex;
 
     private BigDecimal salary;
+
+    @TableField(exist = false)
+    private String tableName;
+
+    @TableField(exist = false)
+    private String transCode;
 }

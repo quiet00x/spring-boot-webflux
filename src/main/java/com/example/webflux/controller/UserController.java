@@ -9,14 +9,10 @@ import com.example.webflux.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -26,17 +22,22 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @RestController
 @Slf4j
+@RequestMapping("/user/")
 public class UserController {
 
     private final UserRepository userRepository;
 
     private final AtomicLong idGenerator = new AtomicLong();
+
     @Autowired
     private UserService userServiceImpl;
+
     @Resource(name="dictProperties")
     private Properties dictProperties;
+
     @Resource(name="versionProperties")
     private Properties versionProperties;
+
     @Resource(name="properties")
     private Properties properties;
 
@@ -49,7 +50,12 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @RequestMapping("/user/save")
+    /**
+     * Mybatis-plus 插件使用demo insert
+     * @param userName
+     * @return
+     */
+    @RequestMapping("save")
     public UserBean saveUser(@RequestParam String userName) {
         UserBean user = new UserBean();
         user.setUserName(userName);
@@ -60,7 +66,11 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping("/user/list")
+    /**
+     * Mybatis-plus 插件使用demo selectAll
+     * @return
+     */
+    @RequestMapping("list")
     public List<UserBean> selectAllUsers() {
 
         List<UserBean> userList = userServiceImpl.list();
@@ -72,7 +82,12 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/user/update")
+    /**
+     * Mybatis-plus 插件使用demo update
+     * @param user
+     * @return
+     */
+    @RequestMapping("update")
     public ResponseResult updateUser(UserBean user) {
 
         if (userServiceImpl.update(user
@@ -84,7 +99,12 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/user/load")
+    /**
+     * 背景：
+     *  容器启动 加载 properties文件，构建数据字典
+     * @param user
+     */
+    @RequestMapping("load")
     public void load(UserBean user) {
 
        log.info(dictProperties.get("userName").toString());
@@ -92,6 +112,42 @@ public class UserController {
        log.info(versionProperties.get("projectVersion").toString());
 
         log.info(properties.getProperty("userId"));
+    }
+
+    /**
+     * 背景：
+     *  调试 Mybatis 分页插件 foreach 丢失list参数
+     * @param userBean
+     * @return
+     */
+    @RequestMapping(value = "getUsers",method = RequestMethod.POST)
+    public List<UserBean> getUsersByIds(@RequestBody UserBean userBean) {
+        log.info("-------------------> userBean:{}",userBean);
+
+        List<UserBean> users= userServiceImpl.mySelectUsers(userBean);
+
+        if (CollectionUtils.isEmpty(users)) {
+            return Collections.emptyList();
+        } else {
+            return users;
+        }
+    }
+
+    /**
+     * 背景：
+     *  1. 不同的条件，执行不同的dao层方法
+     *  2. 条件类别很多，需要用到大量的 if else if
+     *  3. 每个dao方法涉及的表不同
+     * @param userBean
+     * @return
+     */
+    @RequestMapping(value = "getUsersByCondition",method = RequestMethod.POST)
+    public UserBean getUsersByCondition(@RequestBody UserBean userBean) {
+        log.info("-------------------> userBean:{}",userBean);
+
+        UserBean user= userServiceImpl.selectUsersByCondition(userBean);
+
+        return Optional.ofNullable(user).orElse(new UserBean());
     }
 
 }
