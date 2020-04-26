@@ -1,6 +1,6 @@
 package com.example.webflux.common.constant;
 
-public interface Constant {
+public interface WebConstant {
 	
 	/**
 	 * 请求成功响应码值

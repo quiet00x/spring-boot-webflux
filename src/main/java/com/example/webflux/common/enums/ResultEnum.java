@@ -1,12 +1,20 @@
 package com.example.webflux.common.enums;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @project_name: spring-boot-webflux
  * @date: 2020/4/3 - 0:58
  * @author: Mr_Bangb
+ * 枚举常量类 不要提供setter方法
  */
+@AllArgsConstructor
+@Getter
 public enum ResultEnum {
     /**
      * 表示请求成功
@@ -34,16 +42,32 @@ public enum ResultEnum {
      */
     private String message;
 
-    ResultEnum(Integer code, String message) {
-        this.code = code;
-        this.message = message;
+    /**
+     * 根据key 获取 枚举常量的value
+     * @param inputKey
+     * @return
+     */
+    public static String getValueByKey(Integer inputKey) {
+        ResultEnum[] enums = ResultEnum.values();
+        for (ResultEnum  curEnum: enums) {
+            Integer curCode = curEnum.getCode();
+            if (curCode == inputKey) {
+                return curEnum.getMessage();
+            }
+        }
+        return null;
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
+    /**
+     * 将枚举转换为Map
+     * @return Map<Integer,String> map
+     */
+    public static Map<Integer,String> converToMap(){
+        Map<Integer,String> enumMap = new HashMap<>();
+        ResultEnum[] enums = ResultEnum.values();
+        for (ResultEnum  curEnum: enums) {
+            enumMap.put(curEnum.getCode(),curEnum.getMessage());
+        }
+        return enumMap;
     }
 }
