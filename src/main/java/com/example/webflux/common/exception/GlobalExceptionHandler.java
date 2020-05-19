@@ -1,7 +1,9 @@
 package com.example.webflux.common.exception;
 
 import com.example.webflux.common.enums.ResultEnum;
-import com.example.webflux.common.response.ResponseResult;
+import com.example.webflux.common.utils.CommonUtils;
+import com.example.webflux.domain.TraceInfoBean;
+import com.example.webflux.vo.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -31,9 +33,12 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseResult parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
-        log.error("", e);
-        return new ResponseResult(ResultEnum.PARAMETER_ERROR.getCode(), "参数体不能为空");
+    public <T> ResponseVO<T> parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
+        TraceInfoBean traceInfo = CommonUtils.getTraceInfo();
+        log.error("--------------------> traceInfo: {}",traceInfo, e);
+        CommonUtils.cleanResource();
+
+        return new ResponseVO(ResultEnum.PARAMETER_ERROR.getCode(),e.getMessage());
     }
 
     /**
@@ -43,8 +48,9 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseResult parameterExceptionHandler(MethodArgumentNotValidException e) {
-        log.error("", e);
+    public <T> ResponseVO<T> parameterExceptionHandler(MethodArgumentNotValidException e) {
+        TraceInfoBean traceInfo = CommonUtils.getTraceInfo();
+        log.error("--------------------> traceInfo: {}",traceInfo, e);
         // 获取异常信息
         BindingResult exceptions = e.getBindingResult();
         // 判断异常中是否有错误信息，如果存在就使用异常中的消息，否则使用默认消息
@@ -53,9 +59,37 @@ public class GlobalExceptionHandler {
             if (!errors.isEmpty()) {
                 // 这里列出了全部错误参数，按正常逻辑，只需要第一条错误即可
                 FieldError fieldError = (FieldError) errors.get(0);
-                return new ResponseResult(ResultEnum.PARAMETER_ERROR.getCode(), fieldError.getDefaultMessage());
+
+                ResponseVO responseVO = new ResponseVO(ResultEnum.PARAMETER_ERROR.getCode()
+                        , fieldError.getDefaultMessage());
+                responseVO.setTraceInfoBean(traceInfo);
+                CommonUtils.cleanResource();
+                return responseVO;
             }
         }
-        return new ResponseResult(ResultEnum.PARAMETER_ERROR);
+        ResponseVO responseVO = new ResponseVO(ResultEnum.PARAMETER_ERROR);
+        responseVO.setTraceInfoBean(traceInfo);
+        CommonUtils.cleanResource();
+        return new ResponseVO(ResultEnum.PARAMETER_ERROR);
     }
+
+    /**
+     * 自定义异常处理器
+     * @param e 自定义异常
+     * @return ResponseInfo
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(LocalException.class)
+    public <T> ResponseVO<T> parameterExceptionHandler(LocalException e) {
+        TraceInfoBean traceInfo = CommonUtils.getTraceInfo();
+        log.error("--------------------> traceInfo: {}",traceInfo, e);
+
+        ResponseVO responseVO = new ResponseVO(ResultEnum.PARAMETER_ERROR);
+        responseVO.setTraceInfoBean(traceInfo);
+        // 清空线程本地变量
+        CommonUtils.cleanResource();
+
+        return responseVO;
+    }
+
 }

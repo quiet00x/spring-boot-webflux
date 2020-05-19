@@ -1,8 +1,9 @@
 package com.example.webflux.controller;
 
 import com.example.webflux.common.enums.ResultEnum;
-import com.example.webflux.common.response.ResponseResult;
+import com.example.webflux.domain.CreditBaseBean;
 import com.example.webflux.service.CreditProofService;
+import com.example.webflux.vo.ResponseVO;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -31,38 +32,32 @@ public class CreditProofController {
     private CreditProofService creditProofImpl;
 
     @RequestMapping("openTradeProof")
-    public ResponseResult openTradeProof(Map<String, Object> params){
+    public ResponseVO openTradeProof(Map<String, Object> params){
         Map<String, Object> resultMap = creditProofImpl.openTradeProof(params);
 
-
         if (CollectionUtils.isEmpty(resultMap)) {
-
-            return new ResponseResult(ResultEnum.SUCCESS);
+            return new ResponseVO(ResultEnum.SUCCESS);
         } else {
-
-            return new ResponseResult(ResultEnum.FAILE);
+            return new ResponseVO(ResultEnum.FAILE);
         }
     }
 
     @RequestMapping("openCreditProof")
-    public ResponseResult openCreditProof(Map<String, Object> params){
+    public ResponseVO openCreditProof(Map<String, Object> params){
         Map<String, Object> resultMap = creditProofImpl.openCreditProof(params);
 
-
         if (CollectionUtils.isEmpty(resultMap)) {
-
-            return new ResponseResult(ResultEnum.SUCCESS);
+            return new ResponseVO(ResultEnum.SUCCESS);
         } else {
-
-            return new ResponseResult(ResultEnum.FAILE);
+            return new ResponseVO(ResultEnum.FAILE);
         }
     }
 
 
     @RequestMapping("queryCusOpenHis")
-    public Map<String, Object> queryCusOpenHis(Map<String, Object> params){
+    public ResponseVO<CreditBaseBean> queryCusOpenHis(Map<String, Object> params){
         Map<String, Object> httpResult = creditProofImpl.queryCusOpenHis(params);
-        return httpResult;
+        return null;
     }
 
     @RequestMapping("resendEmail")

@@ -52,4 +52,8 @@ public class UserBean {
 
     @TableField(exist = false)
     private String transCode;
+
+    @TableField(exist = false)
+    private List<Long> ids;
+
 }

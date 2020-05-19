@@ -20,9 +20,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <include refid="user_result" />
         from my_user
         <where>
-            <if test="id_in != null and id_in.size()>0">
+            <if test="ids != null and ids.size()>0">
                 and  id in
-                <foreach collection="id_in" item="id" index="index" open="(" close=")" separator=",">
+                <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
                     #{id}
                 </foreach>
              </if>
@@ -32,23 +32,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     <select id="selectSalesUsers" resultType="com.example.webflux.domain.UserBean">
-            select * from SALES_USER where id = ${id}
+            select * from SALES_USER where id = #{id}
     </select>
 
     <select id="selectAdminUsers" resultType="com.example.webflux.domain.UserBean">
-            select * from ADMIN_USER where id = ${id}
+            select * from ADMIN_USER where id = #{id}
     </select>
 
     <select id="selectPerUsers" resultType="com.example.webflux.domain.UserBean">
-            select * from PER_USER where id = ${id}
+            select * from PER_USER where id = #{id}
     </select>
 
     <select id="selectPurUsers" resultType="com.example.webflux.domain.UserBean">
-            select * from PUR_USER where id = ${id}
+            select * from PUR_USER where id = #{id}
     </select>
 
     <select id="selectUserByTransCode" resultType="com.example.webflux.domain.UserBean">
-        select * from ${tableName} where id = ${id}
+        select * from ${tableName} where id = #{id}
     </select>
 
 </mapper>

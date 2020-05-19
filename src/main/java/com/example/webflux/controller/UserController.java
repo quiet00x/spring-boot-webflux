@@ -2,17 +2,25 @@ package com.example.webflux.controller;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.webflux.common.enums.ResultEnum;
-import com.example.webflux.common.response.ResponseResult;
+import com.example.webflux.common.exception.LocalException;
 import com.example.webflux.domain.UserBean;
 import com.example.webflux.repository.UserRepository;
 import com.example.webflux.service.UserService;
+import com.example.webflux.vo.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -56,14 +64,15 @@ public class UserController {
      * @return
      */
     @RequestMapping("save")
-    public UserBean saveUser(@RequestParam String userName) {
+    public ResponseVO<UserBean> saveUser(@RequestParam String userName) {
         UserBean user = new UserBean();
         user.setUserName(userName);
 
         if (userServiceImpl.save(user)) {
             userRepository.save(user);
         }
-        return user;
+
+        return ResponseVO.buildSuccess(null);
     }
 
     /**
@@ -71,15 +80,15 @@ public class UserController {
      * @return
      */
     @RequestMapping("list")
-    public List<UserBean> selectAllUsers() {
+    public ResponseVO<List<UserBean>> selectAllUsers() {
 
         List<UserBean> userList = userServiceImpl.list();
 
         if (CollectionUtils.isEmpty(userList)) {
-            return new ArrayList<>();
-        } else {
-            return userList;
+            userList = Collections.emptyList();
         }
+
+        return ResponseVO.buildSuccess(userList);
     }
 
     /**
@@ -88,14 +97,14 @@ public class UserController {
      * @return
      */
     @RequestMapping("update")
-    public ResponseResult updateUser(UserBean user) {
+    public ResponseVO<UserBean> updateUser(UserBean user) {
 
         if (userServiceImpl.update(user
                 ,new UpdateWrapper<UserBean>()
                         .eq("id",17))) {
-            return new ResponseResult(ResultEnum.SUCCESS);
+            return new ResponseVO(ResultEnum.SUCCESS);
         } else {
-            return new ResponseResult(ResultEnum.FAILE);
+            return new ResponseVO(ResultEnum.FAILE);
         }
     }
 
@@ -112,6 +121,8 @@ public class UserController {
        log.info(versionProperties.get("projectVersion").toString());
 
         log.info(properties.getProperty("userId"));
+
+        Optional.ofNullable(null).orElseThrow(LocalException::new);
     }
 
     /**
@@ -121,15 +132,15 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "getUsers",method = RequestMethod.POST)
-    public List<UserBean> getUsersByIds(@RequestBody UserBean userBean) {
+    public ResponseVO<List<UserBean>> getUsersByIds(@RequestBody UserBean userBean) {
         log.info("-------------------> userBean:{}",userBean);
 
         List<UserBean> users= userServiceImpl.mySelectUsers(userBean);
 
         if (CollectionUtils.isEmpty(users)) {
-            return Collections.emptyList();
+            return ResponseVO.buildSuccess(Collections.emptyList());
         } else {
-            return users;
+            return ResponseVO.buildSuccess(users);
         }
     }
 
@@ -142,12 +153,12 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "getUsersByCondition",method = RequestMethod.POST)
-    public UserBean getUsersByCondition(@RequestBody UserBean userBean) {
+    public ResponseVO<UserBean> getUsersByCondition(@RequestBody UserBean userBean) {
         log.info("-------------------> userBean:{}",userBean);
 
         UserBean user= userServiceImpl.selectUsersByCondition(userBean);
 
-        return Optional.ofNullable(user).orElse(new UserBean());
+        return ResponseVO.buildSuccess(user);
     }
 
 }

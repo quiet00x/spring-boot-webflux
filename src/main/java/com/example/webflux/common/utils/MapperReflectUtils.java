@@ -23,16 +23,16 @@ public class MapperReflectUtils {
      * @return 结果
      */
     public static <T> Object processMapperMethod(String methodName, T t, Object[] args) {
-        Object result = null;
+        Object result;
         Class<?> clz = t.getClass();
         try {
-            log.info("----------------------> method:{} args:{}", methodName, args.toString());
+            log.info("----------------------> method:{} args:{}", methodName, args);
             Method method = clz.getMethod(methodName, t.getClass());
             result = method.invoke(t, args);
         } catch (Exception e) {
             throw new LocalException(e.getMessage(), e);
         }
-        return Optional.ofNullable(result).map(s -> s).orElse(Optional.empty());
+        return Optional.ofNullable(result).orElse(Optional.empty());
     }
 }
 
