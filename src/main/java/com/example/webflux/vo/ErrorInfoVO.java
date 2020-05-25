@@ -1,6 +1,8 @@
 package com.example.webflux.vo;
 
+import com.example.webflux.common.enums.ResultEnum;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -12,16 +14,42 @@ import lombok.ToString;
  * 错误信息
  */
 @Data
+@ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class ErrorInfoVO {
     /**
      * 响应码
      */
-    private Integer code;
+    private String code;
     /**
      * 响应信息
      */
     private String errDetail;
+
+    /**
+     * 通过枚举构建返回错误信息
+     * @param resultEnum 枚举
+     * @return ErrorInfoVO
+     */
+    public static <T> ErrorInfoVO buildErrorInfoVo(ResultEnum resultEnum) {
+        ErrorInfoVO errorInfoVO = ErrorInfoVO.builder()
+                .code(resultEnum.getCode())
+                .errDetail(resultEnum.getMessage()).build();
+        return errorInfoVO;
+    }
+
+    /**
+     * 通过枚举构建返回错误信息
+     * @param curCode 当前错误码
+     * @param curErrMsg 错误信息
+     * @return ErrorInfoVO
+     */
+    public static <T> ErrorInfoVO buildErrorInfoVo(String curCode, String curErrMsg) {
+        ErrorInfoVO errorInfoVO = ErrorInfoVO.builder()
+                .code(curCode)
+                .errDetail(curErrMsg).build();
+        return errorInfoVO;
+    }
 }

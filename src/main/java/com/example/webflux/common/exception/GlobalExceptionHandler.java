@@ -33,12 +33,12 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public <T> ResponseVO<T> parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
+    public <T> ResponseVO parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
         TraceInfoBean traceInfo = CommonUtils.getTraceInfo();
         log.error("--------------------> traceInfo: {}",traceInfo, e);
         CommonUtils.cleanResource();
 
-        return new ResponseVO(ResultEnum.PARAMETER_ERROR.getCode(),e.getMessage());
+        return ResponseVO.buildErrorByDetail(ResultEnum.FAILED_PARAMETER_NOT_NULL_ERROR.getCode(),e.getMessage());
     }
 
     /**
@@ -60,17 +60,19 @@ public class GlobalExceptionHandler {
                 // 这里列出了全部错误参数，按正常逻辑，只需要第一条错误即可
                 FieldError fieldError = (FieldError) errors.get(0);
 
-                ResponseVO responseVO = new ResponseVO(ResultEnum.PARAMETER_ERROR.getCode()
+                ResponseVO responseVO = ResponseVO.buildErrorByDetail(ResultEnum.FAILED_PARAMETER_VALUE_ERROR.getCode()
                         , fieldError.getDefaultMessage());
                 responseVO.setTraceInfoBean(traceInfo);
                 CommonUtils.cleanResource();
                 return responseVO;
             }
         }
-        ResponseVO responseVO = new ResponseVO(ResultEnum.PARAMETER_ERROR);
+
+        ResponseVO responseVO = ResponseVO.buildErrorByResultEnum(ResultEnum.FAILED_PARAMETER_VALUE_ERROR);
         responseVO.setTraceInfoBean(traceInfo);
         CommonUtils.cleanResource();
-        return new ResponseVO(ResultEnum.PARAMETER_ERROR);
+
+        return responseVO;
     }
 
     /**
@@ -84,7 +86,9 @@ public class GlobalExceptionHandler {
         TraceInfoBean traceInfo = CommonUtils.getTraceInfo();
         log.error("--------------------> traceInfo: {}",traceInfo, e);
 
-        ResponseVO responseVO = new ResponseVO(ResultEnum.PARAMETER_ERROR);
+        ResponseVO responseVO = ResponseVO.buildErrorByDetail(
+                ResultEnum.FAILED_PARAMETER_NOT_NULL_ERROR.getCode(),
+                e.getErrorMessage());
         responseVO.setTraceInfoBean(traceInfo);
         // 清空线程本地变量
         CommonUtils.cleanResource();

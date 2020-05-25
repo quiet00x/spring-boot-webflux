@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @project_name: spring-boot-webflux
@@ -31,15 +32,15 @@ public enum MapperEnum {
      * @param inputKey
      * @return
      */
-    public static String getValueByKey(String inputKey) {
+    public static <T> Optional<String> getValueByKey(String inputKey) {
         MapperEnum[] enums = MapperEnum.values();
         for (MapperEnum curEnum: enums) {
             String curCode = curEnum.getTransCode();
             if (StringUtils.equals(curCode,inputKey)) {
-                return curEnum.getTableName();
+                return Optional.ofNullable(curEnum.getTableName());
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     /**

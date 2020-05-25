@@ -1,8 +1,12 @@
 package com.example.webflux.vo;
 
+import com.example.webflux.common.constant.ResponseConstant;
 import com.example.webflux.common.enums.ResultEnum;
 import com.example.webflux.domain.TraceInfoBean;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -12,11 +16,14 @@ import lombok.ToString;
  */
 @Data
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ResponseVO<T> {
     /**
      * 响应码
      */
-    private Integer result;
+    private String result;
     /**
      * 公共交易信息
      */
@@ -34,30 +41,60 @@ public class ResponseVO<T> {
      */
     private ErrorInfoVO errorInfoVO;
 
-    public ResponseVO() {
-        super();
-    }
+    /**
+     * 构建成功请求结果
+     * @param resultData 响应数据
+     * @param <T> 响应数据类型
+     * @return responseResult
+     */
+    public static <T> ResponseVO buildSuccess(T resultData) {
 
-    public ResponseVO(ResultEnum resultEnum){
-        this.errorInfoVO = new ErrorInfoVO(resultEnum.getCode(),resultEnum.getMessage());
-        this.data = null;
-    }
-
-    public ResponseVO(Integer code, String errMsg) {
-        this.errorInfoVO = new ErrorInfoVO(code,errMsg);
-        this.data = null;
+        return ResponseVO.builder()
+                .data(resultData)
+                .result(ResponseConstant.RSP_NORMAL_RESULT)
+                .errorInfoVO(ErrorInfoVO.buildErrorInfoVo(ResultEnum.SUCCESS)).build();
     }
 
     /**
      * 构建成功请求结果
-     * @param data 响应数据
+     * @param resultEnum 枚举
      * @param <T> 响应数据类型
      * @return responseResult
      */
-    public static <T> ResponseVO buildSuccess(T data) {
-        ResponseVO responseResult = new ResponseVO();
-        responseResult.setData(data);
-        responseResult.setResult(ResultEnum.SUCCESS.getCode());
-        return responseResult;
+    public static <T> ResponseVO buildSuccessWithoutData(ResultEnum resultEnum) {
+
+        return ResponseVO.builder()
+                .result(ResponseConstant.RSP_NORMAL_RESULT)
+                .errorInfoVO(ErrorInfoVO.buildErrorInfoVo(resultEnum))
+                .data(null).build();
+    }
+
+    /**
+     * 构建成功请求结果
+     * @param resultEnum 枚举
+     * @param <T> 响应数据类型
+     * @return responseResult
+     */
+    public static <T> ResponseVO buildErrorByResultEnum(ResultEnum resultEnum) {
+
+        return ResponseVO.builder()
+                .result(ResponseConstant.RSP_ERROR_RESULT)
+                .errorInfoVO(ErrorInfoVO.buildErrorInfoVo(resultEnum))
+                .data(null).build();
+    }
+
+    /**
+     * 构建成功请求结果
+     * @param errorCode 错误码
+     * @param errorMsg 错误消息
+     * @param <T> 响应数据类型
+     * @return responseResult
+     */
+    public static <T> ResponseVO buildErrorByDetail(String errorCode, String errorMsg) {
+
+        return ResponseVO.builder()
+                .result(ResponseConstant.RSP_ERROR_RESULT)
+                .errorInfoVO(ErrorInfoVO.buildErrorInfoVo(errorCode,errorMsg))
+                .data(null).build();
     }
 }

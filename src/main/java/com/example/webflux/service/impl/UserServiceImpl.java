@@ -2,7 +2,7 @@ package com.example.webflux.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.webflux.common.constant.TransCodeConstant;
-import com.example.webflux.common.constant.WsErrConstant;
+import com.example.webflux.common.constant.ResponseConstant;
 import com.example.webflux.common.enums.MapperEnum;
 import com.example.webflux.common.enums.TableEnum;
 import com.example.webflux.common.exception.LocalException;
@@ -12,11 +12,9 @@ import com.example.webflux.mapper.UserMapper;
 import com.example.webflux.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +35,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implement
         TRANS_CODE_MAP = TableEnum.converToMap();
     }
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     /**
@@ -53,7 +51,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implement
     /**
      * 各个部门的用户信息查询
      * 业务场景，数据量很大，采用分表策略，一个部门一张表,表字段相差
-     * @param userBean
+     * @param userSerachVo
      * @return
      */
     @Override
@@ -71,7 +69,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implement
         } else if (StringUtils.equals(TransCodeConstant.SELECT_PUR_DEPARTMENT_USER,transCode)) {
             user =userMapper.selectPurUsers(userSerachVo);
         } else {
-            throw new LocalException(WsErrConstant.REQ_PARAMS_ERROR_CODE,"ERROR_TRANS_CODE",transCode);
+            throw new LocalException(ResponseConstant.ILLEGAL_ARGUMENT_EXCEPTION_CODE,"ERROR_TRANS_CODE",transCode);
         }
 
         /*
@@ -103,7 +101,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implement
             3. 性能相对较差
          */
         // 获取方法名
-        String methodName = MapperEnum.getValueByKey(transCode);
+        String methodName = MapperEnum.getValueByKey(transCode).get();
         // 获取对象字节码
         Object result = MapperReflectUtils.processMapperMethod(methodName,userMapper,new Object[]{userSerachVo});
 

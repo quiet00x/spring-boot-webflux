@@ -102,9 +102,9 @@ public class UserController {
         if (userServiceImpl.update(user
                 ,new UpdateWrapper<UserBean>()
                         .eq("id",17))) {
-            return new ResponseVO(ResultEnum.SUCCESS);
+            return ResponseVO.buildSuccessWithoutData(ResultEnum.SUCCESS);
         } else {
-            return new ResponseVO(ResultEnum.FAILE);
+            return ResponseVO.buildErrorByResultEnum((ResultEnum.FAILED_PARAMETER_VALUE_ERROR));
         }
     }
 

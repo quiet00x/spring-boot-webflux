@@ -1,4 +1,4 @@
-package com.example.webflux.aop;
+package com.example.webflux.aop.aspects;
 
 import com.example.webflux.common.exception.LocalException;
 import com.example.webflux.common.utils.CommonUtils;
@@ -49,7 +49,7 @@ public class LoggerAspect {
      * 有异常时：环绕通知增强方法->前置通知->环绕通知连接点->目标方法->（环绕通知异常处理）->后置通知->异常通知
      * 无异常时：环绕通知增强方法->前置通知->环绕通知连接点->目标方法->环绕通知后续方法->后置通知->后置返回通知
      */
-//    @Pointcut("@annotation(com.example.webflux.annotation.TrackerAnnotation)")
+//    @Pointcut("@annotation(com.example.webflux.aop.annotation.TrackerAnnotation)")
     public void adviceWithAnnotation() {}
 
     /**

@@ -1,10 +1,14 @@
 package com.example.webflux.common.enums;
 
+import com.example.webflux.common.constant.ReqConstant;
+import com.example.webflux.common.constant.ResponseConstant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @project_name: spring-boot-webflux
@@ -18,24 +22,24 @@ public enum ResultEnum {
     /**
      * 表示请求成功
      */
-    SUCCESS(1000, "请求成功"),
+    SUCCESS(ResponseConstant.RSP_NORMAL_CODE, ResponseConstant.RSP_NORMAL_MSG),
     /**
-     * 表示请求失败，业务异常
+     * 表示请求失败，请求参数异常，不允许为空
      */
-    FAILE(0000,"请求失败"),
+    FAILED_PARAMETER_NOT_NULL_ERROR(ResponseConstant.ILLEGAL_NULL_PARAM_EXCEPTION_CODE, ResponseConstant.ILLEGAL_NULL_PARAM_EXCEPTION_MSG),
     /**
-     * 表示请求失败，请求参数异常
+     * 表示请求失败，请求参数异常，参数值不正确
      */
-    PARAMETER_ERROR(1001, "请求参数有误!"),
+    FAILED_PARAMETER_VALUE_ERROR(ResponseConstant.ILLEGAL_ARGUMENT_EXCEPTION_CODE, ResponseConstant.ILLEGAL_ARGUMENT_EXCEPTION_MSG),
     /**
-     * 表示系统异常，出现未知错误
+     *  表示请求失败，系统异常，出现未知错误
      */
-    UNKNOWN_ERROR(9999, "未知的错误!");
+    FAILED_UNKNOWN_ERROR(ResponseConstant.UNKNOW_SYSTEM_EXCEPTION_CODE, ResponseConstant.UNKNOW_SYSTEM_EXCEPTION_MSG);
 
     /**
      * 响应码
      */
-    private Integer code;
+    private String code;
     /**
      * 响应消息
      */
@@ -46,23 +50,23 @@ public enum ResultEnum {
      * @param inputKey
      * @return
      */
-    public static String getValueByKey(Integer inputKey) {
+    public static Optional<String> getValueByKey(String inputKey) {
         ResultEnum[] enums = ResultEnum.values();
         for (ResultEnum  curEnum: enums) {
-            Integer curCode = curEnum.getCode();
-            if (curCode == inputKey) {
-                return curEnum.getMessage();
+            String curCode = curEnum.getCode();
+            if (StringUtils.equals(curCode,inputKey)) {
+                return Optional.ofNullable(curEnum.getMessage());
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     /**
      * 将枚举转换为Map
      * @return Map<Integer,String> map
      */
-    public static Map<Integer,String> converToMap(){
-        Map<Integer,String> enumMap = new HashMap<>();
+    public static Map<String,String> converToMap(){
+        Map<String,String> enumMap = new HashMap<>();
         ResultEnum[] enums = ResultEnum.values();
         for (ResultEnum  curEnum: enums) {
             enumMap.put(curEnum.getCode(),curEnum.getMessage());

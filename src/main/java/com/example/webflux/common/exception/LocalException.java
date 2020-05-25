@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Slf4j
 public class LocalException extends RuntimeException {
-
     /**
      * 异常码
      */
@@ -33,13 +32,16 @@ public class LocalException extends RuntimeException {
     public LocalException(String errorCode) {
         super(errorCode);
         this.errorCode = errorCode;
-        log.error(errorCode);
     }
 
     public LocalException(String errorCode, Object ... args) {
         super(errorCode);
         this.errorCode = errorCode;
-        log.error(errorCode,args);
+        StringBuilder builer = new StringBuilder();
+        for (Object arg : args) {
+            builer.append(arg);
+        }
+        this.errorMessage = builer.toString();
     }
 
 }

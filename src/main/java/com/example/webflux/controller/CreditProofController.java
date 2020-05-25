@@ -36,9 +36,9 @@ public class CreditProofController {
         Map<String, Object> resultMap = creditProofImpl.openTradeProof(params);
 
         if (CollectionUtils.isEmpty(resultMap)) {
-            return new ResponseVO(ResultEnum.SUCCESS);
+            return ResponseVO.buildSuccessWithoutData(ResultEnum.SUCCESS);
         } else {
-            return new ResponseVO(ResultEnum.FAILE);
+            return ResponseVO.buildErrorByResultEnum((ResultEnum.FAILED_PARAMETER_VALUE_ERROR));
         }
     }
 
@@ -47,9 +47,9 @@ public class CreditProofController {
         Map<String, Object> resultMap = creditProofImpl.openCreditProof(params);
 
         if (CollectionUtils.isEmpty(resultMap)) {
-            return new ResponseVO(ResultEnum.SUCCESS);
+            return ResponseVO.buildSuccessWithoutData(ResultEnum.SUCCESS);
         } else {
-            return new ResponseVO(ResultEnum.FAILE);
+            return ResponseVO.buildErrorByResultEnum((ResultEnum.FAILED_PARAMETER_VALUE_ERROR));
         }
     }
 
