@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.function.Supplier;
+
 /**
  * @project_name: spring-boot-webflux
  * @date: 2020/4/3 - 1:25
@@ -43,5 +45,4 @@ public class LocalException extends RuntimeException {
         }
         this.errorMessage = builer.toString();
     }
-
 }

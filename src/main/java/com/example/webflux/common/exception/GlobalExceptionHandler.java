@@ -95,5 +95,4 @@ public class GlobalExceptionHandler {
 
         return responseVO;
     }
-
 }

@@ -59,7 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implement
         String transCode = userSerachVo.getTransCode();
 
         // 常规写法
-        UserBean user = null;
+        UserBean user;
         if (StringUtils.equals(TransCodeConstant.SELECT_SALES_DEPARTMENT_USER,transCode)) {
             user = userMapper.selectSalesUsers(userSerachVo);
         } else if (StringUtils.equals(TransCodeConstant.SELECT_ADMIN_DEPARTMENT_USER,transCode)) {

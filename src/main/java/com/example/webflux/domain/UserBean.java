@@ -56,4 +56,6 @@ public class UserBean {
     @TableField(exist = false)
     private List<Long> ids;
 
+    private String password;
+
 }
