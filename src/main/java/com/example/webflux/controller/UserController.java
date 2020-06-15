@@ -1,15 +1,13 @@
 package com.example.webflux.controller;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.extension.api.R;
 import com.example.webflux.common.enums.ResultEnum;
+import com.example.webflux.common.exception.LocalException;
 import com.example.webflux.domain.UserBean;
-import com.example.webflux.repository.UserRepository;
 import com.example.webflux.service.UserService;
 import com.example.webflux.vo.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +22,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -78,22 +76,14 @@ public class UserController {
     @Resource
     private UserService userServiceImpl;
 
-    private final UserRepository userRepository;
     /**
-     * 构造器注入 repository
-     *
-     * @param userRepository repository
+     * 固定大小线程池
      */
-    @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     @Resource(name="fixedThreadPool")
     private ThreadPoolExecutor service;
 
     /**
-     * Mybatis-plus 插件使用demo selectAll
+     * Mybatis-plus 插件使用Demo：selectAll
      * 查询所有users
      *
      * @return users
@@ -101,40 +91,33 @@ public class UserController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseVO<List<UserBean>> selectAllUsers() {
-
+        // MybatisPlus插件，查询所有用户信息
         List<UserBean> userList = userServiceImpl.list();
 
-        if (CollectionUtils.isEmpty(userList)) {
-            userList = Collections.emptyList();
-        }
-        return ResponseVO.buildSuccess(userList);
+        return ResponseVO.buildSuccess(Optional.ofNullable(userList)
+                .orElse(Collections.emptyList()));
     }
 
     /**
      * 背景：
-     *  调试 Mybatis 分页插件 foreach 丢失list参数
-     * @param sex 性别
+     * Mybatis-plus 插件demo：根据id批量查询用户
      * @param ids id列表以‘,'分隔
-     * @return
+     * @return users
      */
-    @RequestMapping(method = RequestMethod.GET,value = "sex/{sex}/{ids}")
-    public ResponseVO<List<UserBean>> getUsersByIds(
-            @PathVariable("sex") String sex, @PathVariable("ids") String ids) {
-        log.info("-------------------> sex:{},ids:{}",sex,ids);
+    @RequestMapping(method = RequestMethod.GET,value = "{ids}")
+    public ResponseVO<List<UserBean>> getUsersByCondition(@PathVariable("ids") String ids) {
+        log.info("-------------------> ids:{}",ids);
 
-        List<Long> idList = new ArrayList<>();
-        if (StringUtils.isNotBlank(ids)) {
-            String[] split = StringUtils.split(ids, ',');
-            Arrays.stream(split).forEach(id -> idList.add(Long.valueOf(id)));
+        if (StringUtils.isBlank(ids)) {
+            throw new LocalException(ResultEnum.FAILED_PARAMETER_NOT_NULL_ERROR);
         }
-        UserBean user = UserBean.builder().sex(sex).ids(idList).build();
-        List<UserBean> users= userServiceImpl.mySelectUsers(user);
 
-        if (CollectionUtils.isEmpty(users)) {
-            return ResponseVO.buildSuccess(Collections.emptyList());
-        } else {
-            return ResponseVO.buildSuccess(users);
-        }
+        List<String> idList = Arrays.asList(StringUtils.split(ids, ','));
+
+        List<UserBean> users = (List<UserBean>) userServiceImpl.listByIds(idList);
+
+        return ResponseVO.buildSuccess(Optional.ofNullable(users)
+                .orElse(Collections.emptyList()));
     }
 
     /**
@@ -156,24 +139,7 @@ public class UserController {
 
         UserBean user = userServiceImpl.getById(id);
 
-        UserBean user1 = userServiceImpl.getById(id);
-
-        return ResponseVO.buildSuccess(user);
-    }
-
-    /**
-     * 背景：
-     *  1. 不同的条件，执行不同的dao层方法
-     *  2. 条件类别很多，需要用到大量的 if else if
-     *  3. 每个dao方法涉及的表不同
-     * @param userBean
-     * @return
-     */
-    @RequestMapping(value = "test",method = RequestMethod.GET)
-    public ResponseVO<UserBean> getUsersByCondition(@RequestBody UserBean userBean) {
-        log.info("-------------------> userBean:{}", userBean);
-
-        UserBean user= userServiceImpl.selectUsersByCondition(userBean);
+        userServiceImpl.getById(id);
 
         return ResponseVO.buildSuccess(user);
     }
@@ -189,7 +155,7 @@ public class UserController {
     public ResponseVO<UserBean> saveUser(@RequestBody List<UserBean> users) {
         ResponseVO<UserBean> responseVO;
         if (CollectionUtils.isEmpty(users)) {
-            responseVO = ResponseVO.buildSuccess(Collections.emptyList());
+            throw new LocalException(ResultEnum.FAILED_PARAMETER_NOT_NULL_ERROR);
         }
 
         if (userServiceImpl.saveBatch(users)) {
@@ -213,7 +179,7 @@ public class UserController {
                     .userName(uuid)
                     .sex(generalSex())
                     .age(String.valueOf(new Random().nextInt(30) +1))
-                    .birthday(new Date())
+                    .birthday(LocalDate.now())
                     .password(uuid)
                     .salary(new BigDecimal(String.valueOf(new Random().nextInt(9999)))).build();
             users.add(userTemp);
@@ -228,9 +194,9 @@ public class UserController {
     }
 
     /**
-     * Mybatis-plus 插件使用demo update
-     * @param user
-     * @return
+     * Mybatis-plus 插件使用demo：update
+     * @param user 更新资源
+     * @return user
      */
     @RequestMapping(method = RequestMethod.PATCH)
     public ResponseVO<UserBean> updateUser(@RequestBody UserBean user) {
@@ -242,5 +208,22 @@ public class UserController {
         } else {
             return ResponseVO.buildErrorByResultEnum((ResultEnum.FAILED_PARAMETER_VALUE_ERROR));
         }
+    }
+
+    /**
+     * 背景：
+     *  1. 不同的条件，执行不同的dao层方法
+     *  2. 条件类别很多，需要用到大量的 if else if
+     *  3. 每个dao方法涉及的表不同
+     * @param userBean
+     * @return
+     */
+    @RequestMapping(value = "test",method = RequestMethod.GET)
+    public ResponseVO<UserBean> getUsersByCondition(@RequestBody UserBean userBean) {
+        log.info("-------------------> userBean:{}", userBean);
+
+        UserBean user= userServiceImpl.selectUsersByCondition(userBean);
+
+        return ResponseVO.buildSuccess(user);
     }
 }

@@ -14,41 +14,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             ,salary
     </sql>
 
-    <select id="mySelectUsers" parameterType="com.example.webflux.domain.UserBean"
-            resultType="com.example.webflux.domain.UserBean">
-        select
-             <include refid="user_result" />
-        from my_user
-        <where>
-            <if test="ids != null and ids.size()>0">
-                and  id in
-                <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
-                    #{id}
-                </foreach>
-             </if>
-            <if test="sex != null and sex!= '' ">
-                and sex = #{sex}
-            </if>
-        </where>
-    </select>
     <select id="selectSalesUsers" resultType="com.example.webflux.domain.UserBean">
-            select * from SALES_USER where id = #{id}
+            select
+            <include refid="user_result" />
+            from
+                SALES_USER
+            where
+                id = #{id}
     </select>
 
     <select id="selectAdminUsers" resultType="com.example.webflux.domain.UserBean">
-            select * from ADMIN_USER where id = #{id}
+        select
+        <include refid="user_result" />
+        from
+            ADMIN_USER
+        where
+            id = #{id}
     </select>
 
     <select id="selectPerUsers" resultType="com.example.webflux.domain.UserBean">
-            select * from PER_USER where id = #{id}
+        select
+        <include refid="user_result" />
+        from
+            PER_USER
+        where
+            id = #{id}
     </select>
 
     <select id="selectPurUsers" resultType="com.example.webflux.domain.UserBean">
-            select * from PUR_USER where id = #{id}
+        select
+        <include refid="user_result" />
+        from
+            PUR_USER
+        where
+            id = #{id}
     </select>
 
     <select id="selectUserByTransCode" resultType="com.example.webflux.domain.UserBean">
-        select * from ${tableName} where id = #{id}
+        select
+        <include refid="user_result" />
+        from
+            ${tableName}
+        where
+            id = #{id}
     </select>
 
 </mapper>

@@ -2,7 +2,12 @@ package com.example.webflux.demo.stream;
 
 import com.example.webflux.domain.UserBean;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 /**
@@ -45,7 +50,7 @@ public class StreamApiDemo {
         System.out.println("*********************Stream sorted *********************");
 
         // 过滤 filter
-        userList.stream().filter((UserBean user3) -> user3.getId() > 2).forEach(user3 -> System.out.println(user3));
+        userList.stream().filter((UserBean user3) -> Integer.valueOf(user3.getId()) > 2).forEach(user3 -> System.out.println(user3));
         System.out.println("*********************Stream filter *********************");
 
         // limit()
@@ -68,10 +73,10 @@ public class StreamApiDemo {
         UserBean user3 = new UserBean();
         UserBean user4 = new UserBean();
 
-        user1.setId(1L);
-        user2.setId(2L);
-        user3.setId(3L);
-        user4.setId(1L);
+        user1.setId("1");
+        user2.setId("2");
+        user3.setId("3");
+        user4.setId("1");
 
         user1.setAge("20");
         user2.setAge("22");
@@ -98,7 +103,7 @@ public class StreamApiDemo {
     private static UserBean initUserBean() {
         UserBean user = new UserBean();
 
-        user.setId(5L);
+        user.setId("5");
         user.setAge("28");
         user.setSex("1");
         user.setUserName("prayer");

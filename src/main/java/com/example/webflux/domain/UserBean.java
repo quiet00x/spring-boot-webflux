@@ -10,6 +10,7 @@ import lombok.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -27,9 +28,8 @@ import java.util.List;
 public class UserBean {
 
     @NotBlank(message = "编号不能为空")
-    @Max(value = 1000,message = "id不能大于1000")
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private String id;
 
     @NotBlank(message = "用户名不能为空")
     private String userName;
@@ -41,11 +41,13 @@ public class UserBean {
     @NotBlank(message = "年龄不能为空！")
     private String age;
 
-    private Date birthday;
-
     private String sex;
 
     private BigDecimal salary;
+
+    private String password;
+
+    private LocalDate birthday;
 
     @TableField(exist = false)
     private String tableName;
@@ -54,8 +56,5 @@ public class UserBean {
     private String transCode;
 
     @TableField(exist = false)
-    private List<Long> ids;
-
-    private String password;
-
+    private List<String> ids;
 }

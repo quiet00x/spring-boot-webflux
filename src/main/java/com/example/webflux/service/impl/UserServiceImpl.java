@@ -1,8 +1,8 @@
 package com.example.webflux.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.webflux.common.constant.TransCodeConstant;
 import com.example.webflux.common.constant.ResponseConstant;
+import com.example.webflux.common.constant.TransCodeConstant;
 import com.example.webflux.common.enums.MapperEnum;
 import com.example.webflux.common.enums.TableEnum;
 import com.example.webflux.common.exception.LocalException;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -37,16 +36,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implement
 
     @Resource
     private UserMapper userMapper;
-
-    /**
-     * 用户列表查询
-     * @param userBeans
-     * @return
-     */
-    @Override
-    public List<UserBean> mySelectUsers(UserBean userBeans) {
-        return userMapper.mySelectUsers(userBeans);
-    }
 
     /**
      * 各个部门的用户信息查询
@@ -104,22 +93,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implement
         String methodName = MapperEnum.getValueByKey(transCode).get();
         // 获取对象字节码
         Object result = MapperReflectUtils.processMapperMethod(methodName,userMapper,new Object[]{userSerachVo});
+        user = (UserBean) result;
 
         /*
-         改进版本3：利用 java多态特性，抽象父 Mapper，子类重写父类 方法
-         适用场景：
-            1. Mapper 方法较多
-            2. 每段sql相差较大且复杂
-         优点：
-            1. 结构清晰
-            2. 无需单独维护映射关系
-         缺点：
-            1. 类多
-            2. Mapper.xml多
-         */
-
-        /*
-        改进版本4：利用函数式编程，抽象一个函数式接口
+        改进版本3：利用函数式编程，抽象一个函数式接口
         适用场景：
             1. 判断条件相同，返回结果相同
             2. 单一方法中判断条件过多
@@ -129,6 +106,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implement
             3. 性能相对较差
          */
 
-        return Optional.ofNullable(user).map(u -> u).orElse(new UserBean());
+        return Optional.ofNullable(user).orElse(new UserBean());
     }
 }
