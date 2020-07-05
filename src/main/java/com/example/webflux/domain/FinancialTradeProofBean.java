@@ -1,5 +1,6 @@
 package com.example.webflux.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -9,5 +10,6 @@ import lombok.Data;
  * 理财产品交易记录实体类
  */
 @Data
+@Builder
 public class FinancialTradeProofBean {
 }

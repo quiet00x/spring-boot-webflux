@@ -1,11 +1,8 @@
 package com.example.webflux.vo;
 
 import com.example.webflux.common.enums.ResultEnum;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  * @project_name: spring-boot-webflux
@@ -14,10 +11,7 @@ import lombok.ToString;
  * 错误信息
  */
 @Data
-@ToString
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class ErrorInfoVO {
     /**
      * 响应码

@@ -3,11 +3,8 @@ package com.example.webflux.vo;
 import com.example.webflux.common.constant.ResponseConstant;
 import com.example.webflux.common.enums.ResultEnum;
 import com.example.webflux.domain.TraceInfoBean;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  * @project_name: spring-boot-webflux
@@ -15,10 +12,7 @@ import lombok.ToString;
  * @author: Mr_Bangb
  */
 @Data
-@ToString
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class ResponseVO<T> {
     /**
      * 响应码

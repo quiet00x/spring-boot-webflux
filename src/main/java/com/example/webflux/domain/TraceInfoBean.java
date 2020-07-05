@@ -1,9 +1,9 @@
 package com.example.webflux.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  * @project_name: spring-boot-webflux
@@ -11,12 +11,15 @@ import lombok.ToString;
  * @author: Mr_Bangb
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
+@Builder
 public class TraceInfoBean {
     private TradeUserBean tradeUserBean;
+
     private String traceNo;
+
     private String clientIp;
+
     private String serverIp;
 }

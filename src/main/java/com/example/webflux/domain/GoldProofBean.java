@@ -1,5 +1,6 @@
 package com.example.webflux.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -9,5 +10,6 @@ import lombok.Data;
  * 黄金证明实体类
  */
 @Data
+@Builder
 public class GoldProofBean {
 }

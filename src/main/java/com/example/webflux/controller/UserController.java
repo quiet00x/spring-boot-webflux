@@ -8,7 +8,6 @@ import com.example.webflux.service.UserService;
 import com.example.webflux.vo.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -107,41 +106,24 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET,value = "{ids}")
     public ResponseVO<List<UserBean>> getUsersByCondition(@PathVariable("ids") String ids) {
         log.info("-------------------> ids:{}",ids);
+        List<UserBean> users;
 
         if (StringUtils.isBlank(ids)) {
             throw new LocalException(ResultEnum.FAILED_PARAMETER_NOT_NULL_ERROR);
         }
 
-        List<String> idList = Arrays.asList(StringUtils.split(ids, ','));
-
-        List<UserBean> users = (List<UserBean>) userServiceImpl.listByIds(idList);
-
+        if (StringUtils.indexOf(",", ids) == -1) {
+            users = Arrays.asList(userServiceImpl.getById(ids));
+        } else {
+            List<String> idList = Arrays.asList(StringUtils.split(ids, ','));
+            if (idList.size() > 1) {
+                users = (List<UserBean>) userServiceImpl.listByIds(idList);
+            } else {
+                users = Arrays.asList(userServiceImpl.getById(idList.get(0)));
+            }
+        }
         return ResponseVO.buildSuccess(Optional.ofNullable(users)
                 .orElse(Collections.emptyList()));
-    }
-
-    /**
-     * 背景：
-     *  1. 不同的条件，执行不同的dao层方法
-     *  2. 条件类别很多，需要用到大量的 if else if
-     *  3. 每个dao方法涉及的表不同
-     * @param id userId
-     * @return user
-     * @Description 使用事务的原因：
-     *  1. Mybatis一级缓存作用效范围是session（默认）或statment；
-     *  2. 数据库连接池，默认每次查询完之后自动commite，会导致两次查询使用的不是同一个sqlSessioin
-     *  3. 不同的sqlSession一级缓存永远不会命中
-     */
-    @Transactional
-    @RequestMapping(value = "{id}",method = RequestMethod.GET)
-    public ResponseVO<UserBean> getUsersById(@PathVariable("id") String id) {
-        log.info("-------------------> id:{}", id);
-
-        UserBean user = userServiceImpl.getById(id);
-
-        userServiceImpl.getById(id);
-
-        return ResponseVO.buildSuccess(user);
     }
 
     /**

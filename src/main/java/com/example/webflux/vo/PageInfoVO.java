@@ -1,9 +1,7 @@
 package com.example.webflux.vo;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  * @project_name: spring-boot-webflux
@@ -12,9 +10,7 @@ import lombok.ToString;
  * 分页对象
  */
 @Data
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 public class PageInfoVO {
     /**
      * 当前页

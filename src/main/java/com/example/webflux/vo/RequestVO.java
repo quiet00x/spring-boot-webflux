@@ -1,9 +1,8 @@
 package com.example.webflux.vo;
 
 import com.example.webflux.domain.TraceInfoBean;
+import lombok.Builder;
 import lombok.Data;
-import lombok.ToString;
-import org.springframework.data.domain.Page;
 
 /**
  * @project_name: spring-boot-webflux
@@ -11,7 +10,7 @@ import org.springframework.data.domain.Page;
  * @author: Mr_Bangb
  */
 @Data
-@ToString
+@Builder
 public class RequestVO <T> {
     /**
      * 公共交易信息

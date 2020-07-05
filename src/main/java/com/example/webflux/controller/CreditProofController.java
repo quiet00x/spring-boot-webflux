@@ -5,12 +5,12 @@ import com.example.webflux.domain.CreditBaseBean;
 import com.example.webflux.service.CreditProofService;
 import com.example.webflux.vo.ResponseVO;
 import com.fasterxml.jackson.annotation.JsonView;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -27,8 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("credit/")
 public class CreditProofController {
-
-    @Autowired
+    @Resource
     private CreditProofService creditProofImpl;
 
     @RequestMapping("openTradeProof")
@@ -53,7 +52,6 @@ public class CreditProofController {
         }
     }
 
-
     @RequestMapping("queryCusOpenHis")
     public ResponseVO<CreditBaseBean> queryCusOpenHis(Map<String, Object> params){
         Map<String, Object> httpResult = creditProofImpl.queryCusOpenHis(params);
@@ -67,7 +65,6 @@ public class CreditProofController {
         Map<String, Object> httpResult = creditProofImpl.resendEmail(params);
         return httpResult;
     }
-
 
     @RequestMapping("queryCreditProofInfo")
     public Map<String, Object> queryCreditProofInfo(Map<String, Object> params){

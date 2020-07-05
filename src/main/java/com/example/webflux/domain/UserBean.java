@@ -19,11 +19,10 @@ import java.util.List;
  * @date: 2020/4/2 - 18:44
  * @author: Mr_Bangb
  */
-@ToString
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @TableName("my_user")
 public class UserBean {
 

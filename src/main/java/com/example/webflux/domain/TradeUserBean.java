@@ -1,6 +1,9 @@
 package com.example.webflux.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @project_name: spring-boot-webflux
@@ -9,6 +12,9 @@ import lombok.Data;
  * 交易柜员实体类
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TradeUserBean {
 
     private String trlUserCode;
