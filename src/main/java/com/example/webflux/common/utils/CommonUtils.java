@@ -1,7 +1,10 @@
 package com.example.webflux.common.utils;
 
+import com.example.webflux.common.constant.ResponseConstant;
+import com.example.webflux.common.exception.LocalException;
 import com.example.webflux.domain.TraceInfoBean;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.util.Optionals;
 
@@ -9,6 +12,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -82,6 +88,29 @@ public class CommonUtils {
      */
     public static Integer generalRandom() {
         return (int)(Math.random() * 1000000 + 1);
+    }
+
+    /**
+     * 字符串拆分，不对input进行必输校验，具体非空校验逻辑具体考虑
+     * @param input 输入项
+     * @param regex 正则
+     * @return @NotNull list
+     */
+    public static List<String> splitQueryParam(String input, String regex) {
+        if (StringUtils.isBlank(regex)) {
+            throw new LocalException(ResponseConstant.ILLEGAL_NULL_PARAM_EXCEPTION_CODE
+                    ,"regex 不能为空！");
+        }
+
+        String[] inputs = input.split(regex);
+        if (ArrayUtils.getLength(inputs) ==0) {
+            return Collections.emptyList();
+        }
+
+        List<String> inputList = Arrays.asList(inputs);
+        inputList.forEach(StringUtils::trim);
+
+        return inputList;
     }
 
 }

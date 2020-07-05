@@ -1,12 +1,15 @@
 package com.example.webflux.controller;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.example.webflux.common.constant.ResponseConstant;
 import com.example.webflux.common.enums.ResultEnum;
 import com.example.webflux.common.exception.LocalException;
+import com.example.webflux.common.utils.CommonUtils;
 import com.example.webflux.domain.UserBean;
 import com.example.webflux.service.UserService;
 import com.example.webflux.vo.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +29,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 /**
  * @project_name: spring-boot-webflux
@@ -106,22 +110,22 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET,value = "{ids}")
     public ResponseVO<List<UserBean>> getUsersByCondition(@PathVariable("ids") String ids) {
         log.info("-------------------> ids:{}",ids);
-        List<UserBean> users;
-
         if (StringUtils.isBlank(ids)) {
             throw new LocalException(ResultEnum.FAILED_PARAMETER_NOT_NULL_ERROR);
         }
 
-        if (StringUtils.indexOf(",", ids) == -1) {
-            users = Arrays.asList(userServiceImpl.getById(ids));
+        // 字符串拆分，不会返回null
+        List<String> idList = CommonUtils.splitQueryParam(ids, ",");
+
+        List<UserBean> users;
+        if (idList.size() == 0) {
+            throw new LocalException(ResultEnum.FAILED_PARAMETER_NOT_NULL_ERROR);
+        } else if (idList.size() == 1) {
+            users = Arrays.asList(userServiceImpl.getById(idList.get(0)));
         } else {
-            List<String> idList = Arrays.asList(StringUtils.split(ids, ','));
-            if (idList.size() > 1) {
-                users = (List<UserBean>) userServiceImpl.listByIds(idList);
-            } else {
-                users = Arrays.asList(userServiceImpl.getById(idList.get(0)));
-            }
+            users = (List<UserBean>) userServiceImpl.listByIds(idList);
         }
+
         return ResponseVO.buildSuccess(Optional.ofNullable(users)
                 .orElse(Collections.emptyList()));
     }
