@@ -1,6 +1,8 @@
 package com.example.webflux.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.webflux.domain.CategoryBean;
+import com.example.webflux.domain.ExtendBean;
 import com.example.webflux.domain.UserBean;
 
 /**
@@ -18,4 +20,8 @@ public interface UserMapper extends BaseMapper<UserBean> {
     UserBean selectPurUsers(UserBean userBean);
 
     UserBean selectUserByTransCode(UserBean userBean);
+
+    CategoryBean getOrgnations(String id);
+
+    ExtendBean getExtends(String id);
 }

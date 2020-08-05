@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class FinancialCreditServiceImpl {
+public class FinancialCreditServiceImpl extends BaseCreditProofServiceImpl{
 
 	/**
 	 * 开立理财产品持有证明

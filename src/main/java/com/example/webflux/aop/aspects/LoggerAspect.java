@@ -85,9 +85,9 @@ public class LoggerAspect {
         T requestBody = getSignature(jp);
 
         if (requestBody instanceof RequestVO) {
-            TraceInfoBean traceInfo = ((ResponseVO) requestBody).getTraceInfoBean();
+            TraceInfoBean traceInfo = ((RequestVO) requestBody).getTraceInfo();
             // 利用ThreadLocal保存全局变量
-            CommonUtils.setTraceInfo((TraceInfoBean) traceInfo);
+            CommonUtils.setTraceInfo(traceInfo);
         } else {
             // 利用ThreadLocal保存全局变量
             CommonUtils.setTraceInfo(new TraceInfoBean());

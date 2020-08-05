@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class LoanCreditServiceImpl extends BaseCreditProofServiceImpl{
+public class LoanCreditServiceImpl extends BaseCreditProofServiceImpl {
 
 	/**
 	 * 开立贷款证明

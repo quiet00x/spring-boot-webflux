@@ -4,11 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.webflux.common.enums.ResultEnum;
 import com.example.webflux.common.exception.LocalException;
 import com.example.webflux.common.utils.CommonUtils;
+import com.example.webflux.domain.CategoryBean;
+import com.example.webflux.domain.ExtendBean;
 import com.example.webflux.domain.UserBean;
-import com.example.webflux.service.UserService;
+import com.example.webflux.service.IUserService;
 import com.example.webflux.vo.ResponseVO;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +30,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @project_name: spring-boot-webflux
@@ -74,13 +80,16 @@ import java.util.concurrent.ThreadPoolExecutor;
 @RestController
 public class UserController {
     @Resource
-    private UserService userServiceImpl;
+    private IUserService userServiceImpl;
 
     /**
      * 固定大小线程池
      */
-    @Resource(name="fixedThreadPool")
-    private ThreadPoolExecutor service;
+    private ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 5,
+            0L, TimeUnit.MILLISECONDS,
+            new ArrayBlockingQueue<>(10),
+            new ThreadFactoryBuilder().setNameFormat("bangb-threadpool-%d").build(),
+            new ThreadPoolExecutor.AbortPolicy());
 
     /**
      * Mybatis-plus 插件使用Demo：selectAll
@@ -105,7 +114,7 @@ public class UserController {
      * @return users
      */
     @RequestMapping(method = RequestMethod.GET,value = "{ids}")
-    public ResponseVO<List<UserBean>> getUsersByCondition(@PathVariable("ids") String ids) {
+    public ResponseVO<List<UserBean>> getUsersByIds(@PathVariable("ids") String ids) {
         log.info("-------------------> ids:{}",ids);
         if (StringUtils.isBlank(ids)) {
             throw new LocalException(ResultEnum.FAILED_PARAMETER_NOT_NULL_ERROR);
@@ -164,7 +173,8 @@ public class UserController {
                     .age(String.valueOf(new Random().nextInt(30) +1))
                     .birthday(LocalDate.now())
                     .password(uuid)
-                    .salary(new BigDecimal(String.valueOf(new Random().nextInt(9999)))).build();
+                    .salary(new BigDecimal(String.valueOf(new Random().nextInt(9999))))
+                    .build();
             users.add(userTemp);
         }
         return users;
@@ -198,15 +208,20 @@ public class UserController {
      *  1. 不同的条件，执行不同的dao层方法
      *  2. 条件类别很多，需要用到大量的 if else if
      *  3. 每个dao方法涉及的表不同
-     * @param userBean
      * @return
      */
-    @RequestMapping(value = "test",method = RequestMethod.GET)
-    public ResponseVO<UserBean> getUsersByCondition(@RequestBody UserBean userBean) {
-        log.info("-------------------> userBean:{}", userBean);
+    @RequestMapping(value = "extend/{id}",method = RequestMethod.GET)
+    public ResponseVO<CategoryBean> getUsersByCondition(@PathVariable("id") String id) {
 
-        UserBean user= userServiceImpl.selectUsersByCondition(userBean);
+        // 获取基本属性
+        CategoryBean org = userServiceImpl.getOrgnations(id);
 
-        return ResponseVO.buildSuccess(user);
+        // 获取动态属性
+        ExtendBean entend = userServiceImpl.getExtends(id);
+
+        // 属性拷贝
+        BeanUtils.copyProperties(entend,org);
+
+        return ResponseVO.buildSuccess(org);
     }
 }

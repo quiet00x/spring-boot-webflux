@@ -6,7 +6,6 @@ import com.example.webflux.domain.TraceInfoBean;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.util.Optionals;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -40,7 +39,6 @@ public class CommonUtils {
     public static TraceInfoBean getTraceInfo(){
         return TRACE_INFO_BEAN_THREAD_LOCAL.get();
     }
-
 
     /**
      * 设置本地线程变量中保存的 TraceInfoBean
@@ -112,5 +110,4 @@ public class CommonUtils {
 
         return inputList;
     }
-
 }

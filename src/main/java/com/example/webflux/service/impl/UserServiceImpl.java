@@ -7,9 +7,11 @@ import com.example.webflux.common.enums.MapperEnum;
 import com.example.webflux.common.enums.TableEnum;
 import com.example.webflux.common.exception.LocalException;
 import com.example.webflux.common.utils.MapperReflectUtils;
+import com.example.webflux.domain.CategoryBean;
+import com.example.webflux.domain.ExtendBean;
 import com.example.webflux.domain.UserBean;
 import com.example.webflux.mapper.UserMapper;
-import com.example.webflux.service.UserService;
+import com.example.webflux.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
-public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implements IUserService {
 
     private static Map<String, String> TRANS_CODE_MAP = new HashMap<>();
 
@@ -43,7 +45,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implement
      * @param userSerachVo
      * @return
      */
-    @Override
     public UserBean selectUsersByCondition(UserBean userSerachVo) {
         String transCode = userSerachVo.getTransCode();
 
@@ -108,4 +109,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserBean> implement
 
         return Optional.ofNullable(user).orElse(new UserBean());
     }
+
+    @Override
+    public CategoryBean getOrgnations(String id) {
+        return userMapper.getOrgnations(id);
+    }
+
+    @Override
+    public ExtendBean getExtends(String id) {
+        return userMapper.getExtends(id);
+    }
+
+
 }

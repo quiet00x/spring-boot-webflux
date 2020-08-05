@@ -59,4 +59,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             id = #{id}
     </select>
 
+    <!-- 获取原属性 -->
+    <select id="getOrgnations" resultType="com.example.webflux.domain.CategoryBean">
+        select
+            entity_id   as entityNo
+            ,parent_id  as parentEntityNo
+            ,no		    as no
+            ,name_cn    as nameCn
+            ,name_en    as nameEn
+            ,create_time as createTime
+            ,update_time as updateTime
+        from
+            category_orgnation
+        where entity_id = #{entityNo}
+    </select>
+
+    <!-- 模拟从动态属性表获取参数 -->
+    <resultMap id="retMap" type="com.example.webflux.domain.ExtendBean">
+        <!-- 已存在的作为原属性的动态属性 -->
+        <result column="category" property="category" />
+        <result column="type_id" property="typeId" />
+        <!-- 新增动态属性用Map承载 -->
+        <association property="extendInfo" javaType="Map">
+            <result column="categoryNameEn" property="categoryNameEn" />
+            <result column="categoryNameCn" property="categoryNameCn" />
+        </association>
+    </resultMap>
+    <select id="getExtends" resultMap="retMap">
+        select
+             category
+            ,type_id
+            ,(select item_value_en from dict_item where type_id = item_id) as categoryNameEn
+            ,(select item_value_cn from dict_item where type_id = item_id) as categoryNameCn
+            ,org.entity_id
+        from
+            category_orgnation
+        where entity_id = #{entityNo}
+    </select>
+
 </mapper>
