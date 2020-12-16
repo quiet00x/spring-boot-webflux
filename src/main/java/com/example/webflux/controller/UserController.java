@@ -114,7 +114,7 @@ public class UserController {
      * @return users
      */
     @RequestMapping(method = RequestMethod.GET,value = "{ids}")
-    public ResponseVO<List<UserBean>> getUsersByIds(@PathVariable("ids") String ids) {
+    public ResponseVO<List<UserBean>> getUsersByIds(@PathVariable("ids") String ids) throws InterruptedException {
         log.info("-------------------> ids:{}",ids);
         if (StringUtils.isBlank(ids)) {
             throw new LocalException(ResultEnum.FAILED_PARAMETER_NOT_NULL_ERROR);
@@ -144,11 +144,12 @@ public class UserController {
      * @description restFul风格请求，POST表示新增
      */
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseVO<UserBean> saveUser(@RequestBody List<UserBean> users) {
+    public ResponseVO<UserBean> saveUser(@RequestBody List<UserBean> users) throws InterruptedException {
         ResponseVO<UserBean> responseVO;
         if (CollectionUtils.isEmpty(users)) {
             throw new LocalException(ResultEnum.FAILED_PARAMETER_NOT_NULL_ERROR);
         }
+        new Thread().sleep(100000);
 
         if (userServiceImpl.saveBatch(users)) {
             responseVO = ResponseVO.buildSuccess(users);

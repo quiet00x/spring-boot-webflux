@@ -10,8 +10,6 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <packaging>jar</packaging>
-
     <!-- 工程坐标 GAV -->
     <groupId>com.example</groupId>
     <artifactId>spring-boot-webflux</artifactId>
@@ -160,6 +158,20 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
+        <!-- activemq -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-activemq</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.68</version>
+            <scope>compile</scope>
+            <type>pom</type>
+        </dependency>
+
         <!-- h2 内存数据库 -->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -198,7 +210,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
         </plugins>
     </build>
 
