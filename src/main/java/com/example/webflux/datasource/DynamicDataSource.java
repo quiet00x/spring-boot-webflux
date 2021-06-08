@@ -2,7 +2,6 @@ package com.example.webflux.datasource;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
-import javax.sql.DataSource;
 import java.util.Map;
 
 /**
@@ -19,7 +18,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     /**
      * 线程本地变量，存放当前线程数据源
      */
-    private static final ThreadLocal<String> CONTEXT_HANGLER = new ThreadLocal<>();
+    private static final ThreadLocal<String> CONTEXT_HANDLER = new ThreadLocal<>();
 
     /**
      * 利用构造方法 设置默认数据源
@@ -38,15 +37,15 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
     private void setDataSource(String dataSource){
-        CONTEXT_HANGLER.set(dataSource);
+        CONTEXT_HANDLER.set(dataSource);
     }
 
     private String getDataSource() {
-        return CONTEXT_HANGLER.get();
+        return CONTEXT_HANDLER.get();
     }
 
     private void removeDataSource(){
-        CONTEXT_HANGLER.remove();
+        CONTEXT_HANDLER.remove();
     }
 
 }

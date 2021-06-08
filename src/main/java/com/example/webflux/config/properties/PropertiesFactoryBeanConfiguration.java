@@ -38,6 +38,4 @@ public class PropertiesFactoryBeanConfiguration {
 
         return propertiesFactoryBean;
     }
-
-
 }

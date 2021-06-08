@@ -26,7 +26,9 @@ public class PropertiesLoaderConfiguration {
 
         Properties properties = new Properties();
 
-        InputStream in = PropertiesLoaderConfiguration.class.getClassLoader().getResourceAsStream(name + ".properties");
+        InputStream in = PropertiesLoaderConfiguration.class
+                .getClassLoader()
+                .getResourceAsStream(name + ".properties");
 
         log.info("*********************** 加载{}.properties ***********************", name);
 

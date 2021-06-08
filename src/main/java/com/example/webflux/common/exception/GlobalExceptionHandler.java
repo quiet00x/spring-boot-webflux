@@ -36,8 +36,6 @@ public class GlobalExceptionHandler {
     public <T> ResponseVO parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
         TraceInfoBean traceInfo = CommonUtils.getTraceInfo();
         log.error("--------------------> traceInfo: {}",traceInfo, e);
-        CommonUtils.cleanResource();
-
         return ResponseVO.buildErrorByDetail(ResultEnum.FAILED_PARAMETER_NOT_NULL_ERROR.getCode(),e.getMessage());
     }
 
@@ -63,15 +61,12 @@ public class GlobalExceptionHandler {
                 ResponseVO responseVO = ResponseVO.buildErrorByDetail(ResultEnum.FAILED_PARAMETER_VALUE_ERROR.getCode()
                         , fieldError.getDefaultMessage());
                 responseVO.setTraceInfoBean(traceInfo);
-                CommonUtils.cleanResource();
                 return responseVO;
             }
         }
 
         ResponseVO responseVO = ResponseVO.buildErrorByResultEnum(ResultEnum.FAILED_PARAMETER_VALUE_ERROR);
         responseVO.setTraceInfoBean(traceInfo);
-        CommonUtils.cleanResource();
-
         return responseVO;
     }
 
@@ -90,9 +85,6 @@ public class GlobalExceptionHandler {
                 ResultEnum.FAILED_PARAMETER_NOT_NULL_ERROR.getCode(),
                 e.getErrorMessage());
         responseVO.setTraceInfoBean(traceInfo);
-        // 清空线程本地变量
-        CommonUtils.cleanResource();
-
         return responseVO;
     }
 }

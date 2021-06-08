@@ -6,6 +6,13 @@ package com.example.webflux.datasource.contstants;
  * @author: Mr_Bangb
  */
 public interface DataSourceConstant {
-    public final static String MASTER_DATABASE = "master";
-    public final static String SLAVE_DATABASE = "slave";
+    /**
+     * 主数据源
+     */
+    String MASTER_DATABASE = "master";
+
+    /**
+     * 从数据源
+     */
+    String SLAVE_DATABASE = "slave";
 }

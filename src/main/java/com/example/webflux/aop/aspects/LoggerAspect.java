@@ -110,9 +110,6 @@ public class LoggerAspect {
             ResponseVO responseVO = (ResponseVO)jsonStr;
             responseVO.setTraceInfoBean(CommonUtils.getTraceInfo());
         }
-
-        // 清空LocalThread 避免内存泄露
-        CommonUtils.cleanResource();
     }
 
     /**
@@ -150,11 +147,19 @@ public class LoggerAspect {
      * @param jp
      */
     @Around("adivceWithExecution()")
-    public <T> ResponseVO<T> processRecorder(ProceedingJoinPoint jp) throws Throwable {
+    public <T> ResponseVO<T> processRecorder(ProceedingJoinPoint jp) {
         log.info("----------------------------< processRecorder around is running >----------------------------");
 
         // 执行切点方法
-        Object proceed = jp.proceed();
+        Object proceed = null;
+        try {
+            proceed = jp.proceed();
+        } catch (Throwable e) {
+            throw new LocalException(e.getMessage(), e);
+        } finally {
+            // 清空LocalThread 避免内存泄露
+            CommonUtils.cleanResource();
+        }
 
         log.info("----------------------------< processRecorder around is over >----------------------------");
         return (ResponseVO<T>) proceed;
