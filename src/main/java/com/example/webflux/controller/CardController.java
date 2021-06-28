@@ -1,7 +1,7 @@
 package com.example.webflux.controller;
 
 import com.example.webflux.domain.CardEntity;
-import com.example.webflux.service.ICardService;
+import com.example.webflux.service.report.ICardService;
 import com.example.webflux.vo.CardVo;
 import com.example.webflux.vo.ResponseVO;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +29,7 @@ public class CardController {
     public ResponseVO<List<CardEntity>> export(@PathVariable("id") Long id) {
         CardVo cardVo = new CardVo();
         cardVo.setId(id);
-        List<CardEntity> cardEntityList = cardService.exportMockito(cardVo);
+        List<CardEntity> cardEntityList = cardService.export(cardVo);
         return ResponseVO.buildSuccess(Optional.ofNullable(cardEntityList)
                 .orElse(Collections.emptyList()));
     }

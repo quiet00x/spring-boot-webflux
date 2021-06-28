@@ -1,4 +1,4 @@
-package com.example.webflux.service.impl;
+package com.example.webflux.service.credit.impl;
 
 import com.example.webflux.domain.CreditBaseBean;
 import org.springframework.stereotype.Service;

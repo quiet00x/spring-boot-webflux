@@ -1,4 +1,4 @@
-package com.example.webflux.service;
+package com.example.webflux.service.pbi;
 
 import com.example.webflux.common.enums.ResultEnum;
 import com.example.webflux.vo.UpdateBatchVO;
@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutionException;
  * @date: 2020/8/3 - 23:27
  * @author: Mr_Bangb
  */
-public interface IManageService extends IManageDetailService{
+public interface IManageService extends IManageDetailService {
     /**
      * 批量更新对象
      *

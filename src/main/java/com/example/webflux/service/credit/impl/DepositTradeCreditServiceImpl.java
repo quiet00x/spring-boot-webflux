@@ -1,14 +1,15 @@
-package com.example.webflux.service.impl;
+package com.example.webflux.service.credit.impl;
 
 import com.example.webflux.domain.CreditBaseBean;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class FundCreditServiceImpl extends BaseCreditProofServiceImpl{
+public class DepositTradeCreditServiceImpl extends BaseCreditProofServiceImpl{
 
 	/**
-	 * 开立基金持有证明
+	 * 开立存款发生额证明
+	 * @param params
 	 * @param printType
 	 * @return
 	 */

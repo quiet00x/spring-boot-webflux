@@ -1,7 +1,7 @@
-package com.example.webflux.service.impl;
+package com.example.webflux.service.pbi.impl;
 
 import com.example.webflux.common.enums.ResultEnum;
-import com.example.webflux.service.IManageDetailService;
+import com.example.webflux.service.pbi.IManageDetailService;
 import com.example.webflux.vo.ResponseVO;
 import com.example.webflux.vo.UpdateBatchVO;
 

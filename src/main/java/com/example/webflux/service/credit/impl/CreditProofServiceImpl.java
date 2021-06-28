@@ -1,6 +1,6 @@
-package com.example.webflux.service.impl;
+package com.example.webflux.service.credit.impl;
 
-import com.example.webflux.service.CreditProofService;
+import com.example.webflux.service.credit.CreditProofService;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

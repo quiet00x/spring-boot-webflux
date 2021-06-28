@@ -1,4 +1,4 @@
-package com.example.webflux.service.impl;
+package com.example.webflux.service.user.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.webflux.common.constant.ResponseConstant;
@@ -11,7 +11,7 @@ import com.example.webflux.domain.CategoryBean;
 import com.example.webflux.domain.ExtendBean;
 import com.example.webflux.domain.UserBean;
 import com.example.webflux.mapper.UserMapper;
-import com.example.webflux.service.IUserService;
+import com.example.webflux.service.user.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

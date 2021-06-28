@@ -2,7 +2,7 @@ package com.example.webflux.controller;
 
 import com.example.webflux.common.enums.ResultEnum;
 import com.example.webflux.domain.CreditBaseBean;
-import com.example.webflux.service.CreditProofService;
+import com.example.webflux.service.credit.CreditProofService;
 import com.example.webflux.vo.ResponseVO;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.util.CollectionUtils;

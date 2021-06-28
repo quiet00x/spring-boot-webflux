@@ -3,7 +3,7 @@ package com.example.webflux.controller;
 import com.example.webflux.common.enums.ResultEnum;
 import com.example.webflux.common.exception.LocalException;
 import com.example.webflux.vo.UpdateBatchVO;
-import com.example.webflux.service.IManageService;
+import com.example.webflux.service.pbi.IManageService;
 import com.example.webflux.vo.RequestVO;
 import com.example.webflux.vo.ResponseVO;
 import lombok.extern.slf4j.Slf4j;

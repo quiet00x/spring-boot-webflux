@@ -1,9 +1,7 @@
 package com.example.webflux.vo;
 
-import com.example.webflux.domain.CardEntity;
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @project_name: spring-boot-webflux
@@ -11,7 +9,15 @@ import lombok.NoArgsConstructor;
  * @author: Mr_Bangb
  */
 @Data
-@Builder
-@NoArgsConstructor
-public class CardVo extends CardEntity {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CardVo extends ReportBaseVo {
+    private String name;
+
+    private String categoryId;
+
+    private Long originId;
+
+    private Long datasetId;
+
+    private String status;
 }

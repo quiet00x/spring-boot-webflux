@@ -1,8 +1,8 @@
-package com.example.webflux.service.impl;
+package com.example.webflux.service.credit.impl;
 
 import com.example.webflux.common.constant.ReqConstant;
 import com.example.webflux.domain.CreditBaseBean;
-import com.example.webflux.service.BV6070Service;
+import com.example.webflux.service.credit.BV6070Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

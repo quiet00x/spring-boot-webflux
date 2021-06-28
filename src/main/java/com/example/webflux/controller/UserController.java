@@ -7,7 +7,7 @@ import com.example.webflux.common.utils.CommonUtils;
 import com.example.webflux.domain.CategoryBean;
 import com.example.webflux.domain.ExtendBean;
 import com.example.webflux.domain.UserBean;
-import com.example.webflux.service.IUserService;
+import com.example.webflux.service.user.IUserService;
 import com.example.webflux.vo.ResponseVO;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;

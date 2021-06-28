@@ -1,7 +1,7 @@
-package com.example.webflux.service.impl;
+package com.example.webflux.service.credit.impl;
 
 import com.example.webflux.domain.CreditBaseBean;
-import com.example.webflux.service.BV6070Service;
+import com.example.webflux.service.credit.BV6070Service;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

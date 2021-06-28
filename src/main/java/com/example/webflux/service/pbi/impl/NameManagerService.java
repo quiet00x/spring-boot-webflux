@@ -1,9 +1,9 @@
-package com.example.webflux.service.impl;
+package com.example.webflux.service.pbi.impl;
 
 import com.example.webflux.common.enums.ResultEnum;
 import com.example.webflux.vo.UpdateBatchVO;
 import com.example.webflux.domain.UserBean;
-import com.example.webflux.service.IUserService;
+import com.example.webflux.service.user.IUserService;
 import com.example.webflux.vo.RequestVO;
 import com.example.webflux.vo.ResponseVO;
 import org.springframework.stereotype.Service;

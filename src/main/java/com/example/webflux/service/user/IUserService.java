@@ -1,4 +1,4 @@
-package com.example.webflux.service;
+package com.example.webflux.service.user;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.webflux.domain.CategoryBean;

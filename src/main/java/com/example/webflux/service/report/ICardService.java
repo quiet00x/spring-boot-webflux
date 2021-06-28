@@ -1,4 +1,4 @@
-package com.example.webflux.service;
+package com.example.webflux.service.report;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.webflux.domain.CardEntity;
@@ -14,6 +14,6 @@ import java.util.List;
  * @date: 2020/4/3 - 21:43
  * @author: Mr_Bangb
  */
-public interface ICardService extends IService<CardEntity> {
-    List<CardEntity> exportMockito(CardVo cardVo);
+public interface ICardService {
+    List<CardVo> exportReport(CardVo cardVo);
 }

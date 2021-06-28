@@ -1,4 +1,4 @@
-package com.example.webflux.service;
+package com.example.webflux.service.credit;
 
 import com.example.webflux.domain.CreditBaseBean;
 

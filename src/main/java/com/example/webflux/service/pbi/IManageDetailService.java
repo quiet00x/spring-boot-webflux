@@ -1,4 +1,4 @@
-package com.example.webflux.service;
+package com.example.webflux.service.pbi;
 
 import com.example.webflux.common.enums.ResultEnum;
 import com.example.webflux.vo.ResponseVO;
