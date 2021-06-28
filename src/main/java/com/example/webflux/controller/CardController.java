@@ -1,6 +1,5 @@
 package com.example.webflux.controller;
 
-import com.example.webflux.domain.CardEntity;
 import com.example.webflux.service.report.ICardService;
 import com.example.webflux.vo.CardVo;
 import com.example.webflux.vo.ResponseVO;
@@ -26,10 +25,10 @@ public class CardController {
     private ICardService cardService;
 
     @RequestMapping(value = "export/{id}", method = RequestMethod.GET)
-    public ResponseVO<List<CardEntity>> export(@PathVariable("id") Long id) {
+    public ResponseVO<List<CardVo>> export(@PathVariable("id") Long id) {
         CardVo cardVo = new CardVo();
         cardVo.setId(id);
-        List<CardEntity> cardEntityList = cardService.export(cardVo);
+        List<CardVo> cardEntityList = cardService.exportReport(cardVo);
         return ResponseVO.buildSuccess(Optional.ofNullable(cardEntityList)
                 .orElse(Collections.emptyList()));
     }
